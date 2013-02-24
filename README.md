@@ -1,6 +1,8 @@
 Git Workspace Manager
 =====================
 
+`gwm` is a tool for managing multiple git repositories. It allows you to run git and shell commands in groups of repositories, rather than running a command separately in each repository.
+
 Usage
 -----
 
@@ -46,6 +48,18 @@ Examples
         Date:   Sun Feb 24 03:42:34 2013 -0800
         
             Added simple readme and script.
+
+    » gwm checkout -b new_branch
+    DbMigrations
+        Switched to a new branch 'new_branch'
+    gwm
+        Switched to a new branch 'new_branch'
+
+    » gwm branch -d new_branch
+    DbMigrations
+        Deleted branch new_branch (was a4eb858).
+    gwm
+        Deleted branch new_branch (was a538409).
 
 ### Shell Commands:
 
