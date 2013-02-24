@@ -37,17 +37,17 @@ Examples
 
     » gwm log -1
     DbMigrations
-        commit a4eb8581951cc629086f32a463926a6b32f6f574
+        commit 034acf91e5c0677e57f479429de86af91d98d22a
         Author: zeal <zealjagannatha@gmail.com>
-        Date:   Thu Feb 21 21:12:04 2013 -0800
+        Date:   Sun Feb 24 04:10:00 2013 -0800
         
-            Updated build.xml pt2
+            Removed build.xml
     gwm
-        commit a53840985ae5b766124dd904cc30d6e5b440f231
-        Author: zeal <zeal@skybox.com>
-        Date:   Sun Feb 24 03:42:34 2013 -0800
+        commit e40fc7f23bda2d207b6f7899d02d0c61732dfbfa
+        Author: zfjagann <zealjagannatha@gmail.com>
+        Date:   Sun Feb 24 04:25:10 2013 -0800
         
-            Added simple readme and script.
+            Updated gwm to sed stderr as well as stdout, and filter git repos correctly...
 
     » gwm checkout -b new_branch
     DbMigrations
