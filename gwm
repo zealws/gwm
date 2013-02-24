@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+PROG=gwm
+
+function is_git_repo {
+    git status &> /dev/null
+    RESULT=$?
+    if [ $RESULT != 128 ] ; then echo "true" ; fi
+}
+
+if [ "$#" == "0" ] ; then
+    echo "Usage:"
+    echo "    $PROG git-command"
+    echo "        Run a git command on all git repositories in the workspace."
+    echo "    $PROG ! shell-command"
+    echo "        Run a shell command on all git repositories in the workspace."
+    echo
+    echo "    Set the WORKSPACE variable to change the workspace location."
+    exit 1
+fi
+
+RAWCOMMAND=
+
+if [ "$1" == "!" ] ; then 
+    RAWCOMMAND="true"
+    shift # discard the bang (no excitement in bash)
+fi
+
+for f in $(ls $WORKSPACE)
+do
+    cd $WORKSPACE/$f
+    echo "$f"
+    if [ is_git_repo ] ; then
+        if [ $RAWCOMMAND ] ; then
+            $@ | sed "s/^/    /"
+        else
+            git $@ | sed "s/^/    /"
+        fi
+    fi
+    cd $WORKSPACE
+done
