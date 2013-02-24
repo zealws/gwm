@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+function execute {
+    echo "    » $@"
+    $@ | sed "s/^/    /"
+}
+
+WORKSPACE=/Users/freud/workspace
+
+echo "Git Workspace Manager"
+echo "====================="
+echo 
+echo "\`gwm\` is a tool for managing multiple git repositories. It allows you to run git and shell commands in groups of repositories, rather than running a command separately in each repository."
+echo 
+echo "Usage"
+echo "-----"
+echo
+execute gwm
+echo "Setup"
+echo "-----"
+echo
+echo "Simply set the WORKSPACE environment variable to point to your workspace."
+echo
+execute echo $WORKSPACE
+echo
+echo "Examples"
+echo "--------"
+echo
+echo "### Git Commands:"
+echo
+execute gwm status
+echo
+execute gwm log -1
+echo
+execute gwm checkout -b new_branch
+echo
+execute gwm branch -d new_branch
+echo
+echo "### Shell Commands:"
+echo
+execute gwm -s pwd
+echo
+execute gwm -s ls
+echo

@@ -8,34 +8,74 @@ function is_git_repo {
     if [ $RESULT != 128 ] ; then echo "true" ; fi
 }
 
-if [ "$#" == "0" ] ; then
+function execute {
+    $@ 2>&1 | sed "s/^/    /"
+}
+
+function print_usage {
     echo "Usage:"
-    echo "    $PROG git-command"
-    echo "        Run a git command on all git repositories in the workspace."
-    echo "    $PROG ! shell-command"
-    echo "        Run a shell command on all git repositories in the workspace."
+    echo "    $PROG command"
+    echo "    $PROG options command"
     echo
-    echo "    Set the WORKSPACE variable to change the workspace location."
+    echo "    options:"
+    echo "        -s"
+    echo "            Execute a shell command, rather than a git command."
+    echo "        -w DIR"
+    echo "            Set the workspace location."
+    echo "        -h, --help"
+    echo "            Print this help message and exit."
+    echo "        --"
+    echo "            Signifies the end of options. Any arguments after this point are"
+    echo "            treated as part of the command."
+    echo
+    echo "    Set the WORKSPACE variable to change the default workspace location."
     exit 1
+}
+
+if [ "$#" == "0" ] ; then
+    print_usage
 fi
 
-RAWCOMMAND=
+WS=$WORKSPACE
+TYPE=git
+COMMAND=
 
-if [ "$1" == "!" ] ; then 
-    RAWCOMMAND="true"
-    shift # discard the bang
+while (( $# )) ; do
+
+    if [ "$1" == "-s" ] ; then
+        TYPE=shell
+    elif [ "$1" == "-w" ] ; then
+        shift
+        WS=$1
+    elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
+        print_usage
+    elif [ "$1" == "--" ] ; then
+        shift
+        command=$@
+        break
+    else
+        command=$@
+        break
+    fi
+
+    shift
+done
+
+if [ "$WS" == "" ] ; then
+    echo "Workspace location not set."
+    print_usage
 fi
 
-for f in $(ls $WORKSPACE)
+for f in $(ls $WS)
 do
-    cd $WORKSPACE/$f
+    cd $WS/$f
     if [ "$(is_git_repo)" ] ; then
         echo "$f"
-        if [ $RAWCOMMAND ] ; then
-            $@ 2>&1 | sed "s/^/    /"
-        else
-            git $@ 2>&1 | sed "s/^/    /"
+        if [ "$TYPE" == "shell" ] ; then
+            execute $@
+        elif [ "$TYPE" == "git" ] ; then
+            execute git $@ 
         fi
     fi
-    cd $WORKSPACE
+    cd $WS
 done

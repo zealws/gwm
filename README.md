@@ -6,20 +6,29 @@ Git Workspace Manager
 Usage
 -----
 
+    » gwm
     Usage:
-        gwm git-command
-            Run a git command on all git repositories in the workspace.
-        gwm ! shell-command
-            Run a shell command on all git repositories in the workspace.
+        gwm command
+        gwm options command
     
-        Set the WORKSPACE variable to change the workspace location.
-
+        options:
+            -s
+                Execute a shell command, rather than a git command.
+            -w DIR
+                Set the workspace location.
+            -h, --help
+                Print this help message and exit.
+            --
+                Signifies the end of options. Any arguments after this point are
+                treated as part of the command.
+    
+        Set the WORKSPACE variable to change the default workspace location.
 Setup
 -----
 
 Simply set the WORKSPACE environment variable to point to your workspace.
 
-    » echo $WORKSPACE
+    » echo /Users/freud/workspace
     /Users/freud/workspace
 
 Examples
@@ -29,52 +38,52 @@ Examples
 
     » gwm status
     DbMigrations
-        # On branch master
+        # On branch new_branch
         nothing to commit (working directory clean)
     gwm
-        # On branch master
+        # On branch new_branch
         nothing to commit (working directory clean)
 
     » gwm log -1
     DbMigrations
-        commit a4eb8581951cc629086f32a463926a6b32f6f574
+        commit 034acf91e5c0677e57f479429de86af91d98d22a
         Author: zeal <zealjagannatha@gmail.com>
-        Date:   Thu Feb 21 21:12:04 2013 -0800
+        Date:   Sun Feb 24 04:10:00 2013 -0800
         
-            Updated build.xml pt2
+            Removed build.xml
     gwm
-        commit a53840985ae5b766124dd904cc30d6e5b440f231
-        Author: zeal <zeal@skybox.com>
-        Date:   Sun Feb 24 03:42:34 2013 -0800
+        commit e40fc7f23bda2d207b6f7899d02d0c61732dfbfa
+        Author: zfjagann <zealjagannatha@gmail.com>
+        Date:   Sun Feb 24 04:25:10 2013 -0800
         
-            Added simple readme and script.
+            Updated gwm to sed stderr as well as stdout, and filter git repos correctly. Updated README with general description.
 
     » gwm checkout -b new_branch
     DbMigrations
-        Switched to a new branch 'new_branch'
+        fatal: A branch named 'new_branch' already exists.
     gwm
-        Switched to a new branch 'new_branch'
+        fatal: A branch named 'new_branch' already exists.
 
     » gwm branch -d new_branch
     DbMigrations
-        Deleted branch new_branch (was a4eb858).
+        error: Cannot delete the branch 'new_branch' which you are currently on.
     gwm
-        Deleted branch new_branch (was a538409).
+        error: Cannot delete the branch 'new_branch' which you are currently on.
 
 ### Shell Commands:
 
-    » gwm ! pwd
+    » gwm -s pwd
     DbMigrations
         /Users/freud/workspace/DbMigrations
     gwm
         /Users/freud/workspace/gwm
 
-    » gwm ! ls 
+    » gwm -s ls
     DbMigrations
         README.md
-        build.xml
         dbmigrations
         setup.py
     gwm
         README.md
         gwm
+
