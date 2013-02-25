@@ -28,7 +28,7 @@ Setup
 
 Simply set the WORKSPACE environment variable to point to your workspace.
 
-    » echo /Users/freud/workspace
+    » echo $WORKSPACE
     /Users/freud/workspace
 
 Examples
