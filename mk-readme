@@ -32,7 +32,11 @@ execute gwm status
 echo
 execute gwm log -1
 echo
+gwm checkout master &> /dev/null
+gwm branch -d new_branch &> /dev/null
 execute gwm checkout -b new_branch
+echo
+execute gwm checkout master
 echo
 execute gwm branch -d new_branch
 echo

@@ -60,15 +60,21 @@ Examples
 
     » gwm checkout -b new_branch
     DbMigrations
-        fatal: A branch named 'new_branch' already exists.
+        Switched to a new branch 'new_branch'
     gwm
-        fatal: A branch named 'new_branch' already exists.
+        Switched to a new branch 'new_branch'
+
+    » gwm checkout master
+    DbMigrations
+        Switched to branch 'master'
+    gwm
+        Switched to branch 'master'
 
     » gwm branch -d new_branch
     DbMigrations
-        error: Cannot delete the branch 'new_branch' which you are currently on.
+        Deleted branch new_branch (was 034acf9).
     gwm
-        error: Cannot delete the branch 'new_branch' which you are currently on.
+        Deleted branch new_branch (was e40fc7f).
 
 ### Shell Commands:
 
