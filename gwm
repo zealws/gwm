@@ -75,6 +75,10 @@ if [[ "$WS" == "" ]] ; then
     print_usage
 fi
 
+if [[ "$WS" == "." ]] ; then
+    WS=$(pwd)
+fi
+
 for f in $(ls $WS)
 do
     if [ -d $WS/$f ] ; then
