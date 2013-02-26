@@ -38,11 +38,15 @@ Examples
 
     » gwm status
     DbMigrations
-        # On branch new_branch
+        # On branch master
         nothing to commit (working directory clean)
     gwm
-        # On branch new_branch
-        nothing to commit (working directory clean)
+        # On branch master
+        # Untracked files:
+        #   (use "git add <file>..." to include in what will be committed)
+        #
+        #	my file
+        nothing added to commit but untracked files present (use "git add" to track)
 
     » gwm log -1
     DbMigrations
@@ -92,4 +96,5 @@ Examples
     gwm
         README.md
         gwm
+        my file
 

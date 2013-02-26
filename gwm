@@ -5,11 +5,11 @@ PROG=gwm
 function is_git_repo {
     git status &> /dev/null
     RESULT=$?
-    if [ $RESULT != 128 ] ; then echo "true" ; fi
+    if [[ $RESULT != 128 ]] ; then echo "true" ; fi
 }
 
 function execute {
-    $@ 2>&1 | sed "s/^/    /"
+    "$@" 2>&1 | sed "s/^/    /"
 }
 
 function print_usage {
@@ -32,49 +32,60 @@ function print_usage {
     exit 1
 }
 
-if [ "$#" == "0" ] ; then
+if [[ "$#" == "0" ]] ; then
     print_usage
 fi
 
 WS=$WORKSPACE
 TYPE=git
-COMMAND=
 
 while (( $# )) ; do
 
-    if [ "$1" == "-s" ] ; then
+    if [[ "$1" == "-s" ]] ; then
         TYPE=shell
-    elif [ "$1" == "-w" ] ; then
+    elif [[ "$1" == "-w" ]] ; then
         shift
         WS=$1
-    elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
+    elif [[ "$1" == "-h" ]] ; then
         print_usage
-    elif [ "$1" == "--" ] ; then
+    elif [[ "$1" == "--help" ]] ; then
+        print_usage
+    elif [[ "$1" == "--" ]] ; then
         shift
-        command=$@
         break
     else
-        command=$@
         break
     fi
 
     shift
 done
 
-if [ "$WS" == "" ] ; then
+COMMAND=
+
+for ix in "$@" ; do
+    if [ $COMMAND ] ; then
+        COMMAND=("${COMMAND[@]}" "$ix")
+    else
+        COMMAND=("$ix")
+    fi
+done
+
+if [[ "$WS" == "" ]] ; then
     echo "Workspace location not set."
     print_usage
 fi
 
 for f in $(ls $WS)
 do
-    cd $WS/$f
-    if [ "$(is_git_repo)" ] ; then
-        echo "$f"
-        if [ "$TYPE" == "shell" ] ; then
-            execute $@
-        elif [ "$TYPE" == "git" ] ; then
-            execute git $@ 
+    if [ -d $WS/$f ] ; then
+        cd $WS/$f
+        if [[ "$(is_git_repo)" ]] ; then
+            echo "$f"
+            if [[ "$TYPE" == "shell" ]] ; then
+                execute "${COMMAND[@]}"
+            elif [[ "$TYPE" == "git" ]] ; then
+                execute git "${COMMAND[@]}"
+            fi
         fi
     fi
     cd $WS
