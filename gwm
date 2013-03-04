@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 PROG=gwm
+VERSION=1.0.1
 
 function is_git_repo {
     git status &> /dev/null
@@ -13,6 +14,7 @@ function execute {
 }
 
 function print_usage {
+    echo "$PROG v$VERSION"
     echo "Usage:"
     echo "    $PROG command"
     echo "    $PROG options command"
@@ -22,7 +24,7 @@ function print_usage {
     echo "            Execute a shell command, rather than a git command."
     echo "        -w DIR"
     echo "            Set the workspace location."
-    echo "        -h, --help"
+    echo "        -h, --help, -v, --version"
     echo "            Print this help message and exit."
     echo "        --"
     echo "            Signifies the end of options. Any arguments after this point are"
@@ -40,7 +42,6 @@ WS=$WORKSPACE
 TYPE=git
 
 while (( $# )) ; do
-
     if [[ "$1" == "-s" ]] ; then
         TYPE=shell
     elif [[ "$1" == "-w" ]] ; then
@@ -49,6 +50,10 @@ while (( $# )) ; do
     elif [[ "$1" == "-h" ]] ; then
         print_usage
     elif [[ "$1" == "--help" ]] ; then
+        print_usage
+    elif [[ "$1 " == "-v" ]] ; then
+        print_usage
+    elif [[ "$1 " == "--version" ]] ; then
         print_usage
     elif [[ "$1" == "--" ]] ; then
         shift
